@@ -11,13 +11,13 @@ pipeline {
 
         stage('Restore Dependencies') {
             steps {
-                bat 'dotnet restore "C:\\Users\\HP\\source\\repos\\WepApi\\WepApi.csproj"'
+                bat 'dotnet restore "C:\ProgramData\Jenkins\.jenkins\workspace\WebApiProject"'
             }
         }
 
         stage('Build') {
             steps {
-                bat 'dotnet build "C:\\Users\\HP\\source\\repos\\WepApi\\WepApi.csproj" --configuration Release'
+                bat 'dotnet build "C:\ProgramData\Jenkins\.jenkins\workspace\WebApiProject" --configuration Release'
             }
         }
 
