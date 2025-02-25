@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Pull') {
             steps {
                 // Git branch adını doğru girin: 'main' veya 'master'
                 git branch: 'main', url: 'https://github.com/CerenT07/WebApiTest.git'
