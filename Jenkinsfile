@@ -28,4 +28,19 @@ pipeline {
         }
 
         stage('Docker Run') {
-           
+            steps {
+                bat 'docker run -d --name my-container-name wepapi:dev'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'This pipeline is working successfully!'
+        }
+
+        failure {
+            echo 'This pipeline is not working correctly!'
+        }
+    }
+}
