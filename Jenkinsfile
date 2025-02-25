@@ -4,7 +4,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/CerenT07/WebApiTest.git'
+                // Git branch adını doğru girin: 'main' veya 'master'
+                git branch: 'main', url: 'https://github.com/CerenT07/WebApiTest.git'
             }
         }
 
