@@ -12,19 +12,28 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["WepApi/WepApi.csproj", "WepApi/"]
-RUN dotnet restore "./WepApi/WepApi.csproj"
+
+# Proje dosyasını doğrudan kök dizinden kopyalıyoruz
+COPY ["WepApi.csproj", "./"]  # WepApi.csproj dosyasını doğrudan kök dizinden kopyala
+RUN dotnet restore "WepApi.csproj"
+
+# Diğer dosyaları kopyalıyoruz
 COPY . .
-WORKDIR "/src/WepApi"
-RUN dotnet build "./WepApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+WORKDIR "/src"
+RUN dotnet build "WepApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Bu aşama, son aşamaya kopyalanacak hizmet projesini yayımlamak için kullanılır
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./WepApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "WepApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Bu aşama üretimde veya VS'den normal modda çalıştırıldığında kullanılır (Hata Ayıklama yapılandırması kullanılmazken varsayılan olarak ayarlıdır)
 FROM base AS final
 WORKDIR /app
+
+# Publish edilmiş dosyayı alıyoruz
 COPY --from=publish /app/publish .
+
+# Uygulamayı çalıştırıyoruz
 ENTRYPOINT ["dotnet", "WepApi.dll"]
