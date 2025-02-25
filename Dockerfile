@@ -5,16 +5,16 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
 # Proje dosyasını kopyalıyoruz
-COPY ["WepApi.csproj", "./"]  # Proje dosyasını kök dizine kopyalıyoruz
+COPY ["WebApiProject/WepApi.csproj", "WebApiProject/"]  # Proje dosyasını WebApiProject klasörüne kopyalıyoruz
 
 # Bağımlılıkları yükliyoruz
-RUN dotnet restore "WepApi.csproj"
+RUN dotnet restore "WebApiProject/WepApi.csproj"
 
 # Diğer dosyaları kopyalıyoruz
 COPY . .
 
 # Projeyi build ediyoruz
-RUN dotnet build "WepApi.csproj" --configuration Release
+RUN dotnet build "WebApiProject/WepApi.csproj" --configuration Release
 
 # Çalıştırma için kullanılacak ASP.NET runtime imajını kullanıyoruz
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
@@ -23,7 +23,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 
 # Yine proje dosyasını kopyalıyoruz
-COPY --from=build /app .  # Kopyalanan tüm dosyaları çalışma dizinine kopyalıyoruz
+COPY --from=build /app/WebApiProject/bin/Release/net8.0/publish/ .  # Yayınlanan dosyaları kopyalıyoruz
 
 # Konteyneri çalıştırırken hangi portu kullanacağımızı belirliyoruz
 EXPOSE 80
