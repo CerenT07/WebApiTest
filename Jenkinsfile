@@ -6,7 +6,7 @@ pipeline{
         
         stage('pull'){
 
-            script{
+            scripts{
 
                git 'https://github.com/CerenT07/WebApiTest.git'
 
