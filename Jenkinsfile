@@ -20,7 +20,7 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                bat 'docker build -t wepapi:dev "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\WebApiProject"'
+                bat 'docker build -t wepapi:dev .'
             }
         }
 
