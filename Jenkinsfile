@@ -11,13 +11,13 @@ pipeline {
 
         stage('Restore Dependencies') {
             steps {
-                bat 'dotnet restore WepApi/WepApi.csproj'
+                bat 'dotnet restore WepApi.csproj'
             }
         }
 
         stage('Build') {
             steps {
-                bat 'dotnet build WepApi/WepApi.csproj --configuration Release'
+                bat 'dotnet build WepApi.csproj --configuration Release'
             }
         }
 
