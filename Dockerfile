@@ -5,7 +5,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
 # Proje dosyasını kopyalıyoruz
-COPY ["WepApi.csproj", "./"]  # Proje dosyasını mevcut dizine kopyalıyoruz
+COPY ["WepApi.csproj", "./"] 
 
 # Bağımlılıkları yükliyoruz
 RUN dotnet restore "WepApi.csproj"
@@ -23,7 +23,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 
 # Yine proje dosyasını kopyalıyoruz
-COPY --from=build /app .  # Kopyalanan tüm dosyaları çalışma dizinine kopyalıyoruz
+COPY --from=build /app . 
 
 # Konteyneri çalıştırırken hangi portu kullanacağımızı belirliyoruz
 EXPOSE 80
