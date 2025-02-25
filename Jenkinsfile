@@ -9,11 +9,8 @@ pipeline {
             }
         }
 
-        stage('Restore Dependencies') {
-            steps {
-                bat 'dotnet restore "C:\ProgramData\Jenkins\.jenkins\workspace\WebApiProject"'
-            }
-        }
+       
+        
 
         stage('Build') {
             steps {
