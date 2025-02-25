@@ -11,19 +11,19 @@ pipeline {
 
         stage('Restore Dependencies') {
             steps {
-                bat 'dotnet restore WepApi.csproj'
+                bat ' dotnet store "C:\\Users\\HP\\source\\repos\\WepApi\\WepApi.csproj"'
             }
         }
 
         stage('Build') {
             steps {
-                bat 'dotnet build WepApi.csproj --configuration Release'
+                bat 'dotnet build "C:\\Users\\HP\\source\\repos\\WepApi\\WepApi.csproj" --configuration Release'
             }
         }
 
         stage('Docker Build') {
             steps {
-                bat 'docker build -t wepapi:dev docker build -t wepapi:dev C:/Users/HP/source/repos/WepApi
+                bat 'docker build -t wepapi:dev docker build -t wepapi:dev "C:/Users/HP/source/repos/WepApi"'
 '
             }
         }
