@@ -1,39 +1,32 @@
-# Hata ayıklama kapsayıcınızı özelleştirme ve Visual Studio’nun daha hızlı hata ayıklama için görüntülerinizi derlemek üzere bu Dockerfile'ı nasıl kullandığı hakkında bilgi edinmek için https://aka.ms/customizecontainer sayfasına bakın.
-
-# Bu aşama, VS'den hızlı modda çalıştırıldığında kullanılır (Hata ayıklama yapılandırması için varsayılan olarak ayarlıdır)
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
-WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
-
-
-# Bu aşama, hizmet projesini oluşturmak için kullanılır
+# .NET SDK imajını kullanıyoruz
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
 
-# Proje dosyasını doğrudan kök dizinden kopyalıyoruz
-COPY ["WepApi.csproj", "./"]  # WepApi.csproj dosyasını doğrudan kök dizinden kopyala
+# Çalışma dizini olarak /app ayarlıyoruz
+WORKDIR /app
+
+# Proje dosyasını kopyalıyoruz
+COPY ["WepApi.csproj", "./"]  # Proje dosyasını kök dizine kopyalıyoruz
+
+# Bağımlılıkları yükliyoruz
 RUN dotnet restore "WepApi.csproj"
 
 # Diğer dosyaları kopyalıyoruz
 COPY . .
 
-WORKDIR "/src"
-RUN dotnet build "WepApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
+# Projeyi build ediyoruz
+RUN dotnet build "WepApi.csproj" --configuration Release
 
-# Bu aşama, son aşamaya kopyalanacak hizmet projesini yayımlamak için kullanılır
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "WepApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+# Çalıştırma için kullanılacak ASP.NET runtime imajını kullanıyoruz
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 
-# Bu aşama üretimde veya VS'den normal modda çalıştırıldığında kullanılır (Hata Ayıklama yapılandırması kullanılmazken varsayılan olarak ayarlıdır)
-FROM base AS final
+# Çalışma dizini olarak /app ayarlıyoruz
 WORKDIR /app
 
-# Publish edilmiş dosyayı alıyoruz
-COPY --from=publish /app/publish .
+# Yine proje dosyasını kopyalıyoruz
+COPY --from=build /app .  # Kopyalanan tüm dosyaları çalışma dizinine kopyalıyoruz
 
-# Uygulamayı çalıştırıyoruz
+# Konteyneri çalıştırırken hangi portu kullanacağımızı belirliyoruz
+EXPOSE 80
+
+# Uygulamayı başlatıyoruz
 ENTRYPOINT ["dotnet", "WepApi.dll"]
