@@ -23,7 +23,7 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                bat 'docker build -t wepapi:dev docker build -t wepapi:dev C:/Users/HP/source/repos/WepApi/
+                bat 'docker build -t wepapi:dev docker build -t wepapi:dev C:/Users/HP/source/repos/WepApi
 '
             }
         }
