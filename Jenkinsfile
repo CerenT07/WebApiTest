@@ -31,7 +31,7 @@ pipeline {
         }
         stage('Testing'){
             steps{
-                bat 'dotnet test C:\Users\HP\Desktop\WebApiTest\WebApiTest.csproj'
+                bat 'dotnet test  "C:\\Users\\HP\\Desktop\\WebApiTest\\WebApiTest.csproj"'
             }
         }
     }
