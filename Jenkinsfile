@@ -29,6 +29,11 @@ pipeline {
                 bat 'docker run -d --name my-containers-name wepapi:dev'
             }
         }
+        stage('Testing'){
+            steps{
+                bat 'dotnet test WebApiTest/WebApiTest.csproj'
+            }
+        }
     }
 
     post {
