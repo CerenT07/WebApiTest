@@ -10,11 +10,15 @@ pipeline {
         }
 
        
-        
-
+    
         stage('Build') {
             steps {
                 bat 'dotnet build "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\WebApiProject" --configuration Release'
+            }
+        }
+         stage('Testing'){
+            steps{
+                bat 'dotnet test  "C:\\Users\\HP\\Desktop\\WebApiTest\\WebApiTest.csproj"'
             }
         }
 
@@ -29,11 +33,7 @@ pipeline {
                 bat 'docker run -d --name my-containers-name wepapi:dev'
             }
         }
-        stage('Testing'){
-            steps{
-                bat 'dotnet test  "C:\\Users\\HP\\Desktop\\WebApiTest\\WebApiTest.csproj"'
-            }
-        }
+       
     }
 
     post {
