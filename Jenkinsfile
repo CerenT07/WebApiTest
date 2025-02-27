@@ -30,7 +30,7 @@ pipeline {
 
         stage('Docker Run') {
             steps {
-                bat 'docker run -d --name my-containers-name wepapi:dev'
+                bat 'docker run -d --name my-containerss-name wepapi:dev'
             }
         }
        
